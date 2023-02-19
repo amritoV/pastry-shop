@@ -4,7 +4,7 @@ import it.amrito.pastryshopbe.dto.TypologicalSweetDto;
 import it.amrito.pastryshopbe.dto.TypologicalSweetLiteDto;
 import it.amrito.pastryshopbe.model.TypologicalSweetModel;
 import it.amrito.pastryshopbe.service.TypologicalService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,7 +26,7 @@ public class TypologicalController {
         return ResponseEntity.ok(typologicalService.findAllDto());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<TypologicalSweetDto> getById(@PathVariable("id") Long id){
         Optional<TypologicalSweetDto> sweetDtoOpt = typologicalService.findDtoById(id);
         return sweetDtoOpt.map(x -> ResponseEntity.ok().body(x))
@@ -42,7 +42,7 @@ public class TypologicalController {
         return ResponseEntity.ok(typologicalService.save(sweetDto));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<TypologicalSweetLiteDto> update(@PathVariable("id") Long id,
                                                               @Valid @RequestBody TypologicalSweetDto sweetDto){
         //se la tipologica dolce da aggiornare non esiste, ritorno NOT FOUND
@@ -62,7 +62,7 @@ public class TypologicalController {
         return ResponseEntity.ok(sweetLiteDtoUpdated);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id){
         Optional<TypologicalSweetModel> model = typologicalService.findModelById(id);
         if(!model.isPresent()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //todo gestire messaggio d'errore

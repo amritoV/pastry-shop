@@ -44,6 +44,14 @@ public class Mapper {
         return modelMapper.map(sweetModel, TypologicalSweetLiteDto.class);
     }
 
+    public DashboardDto map(DashboardModel dashboardModel, Double effectivePrice){
+        DashboardDto dashboardDto = modelMapper.map(dashboardModel, DashboardDto.class);
+        TypologicalSweetLiteDto typologicalSweetLiteDto = this.mapLite(dashboardModel.getTypologicalSweetModel());
+        typologicalSweetLiteDto.setPrice(effectivePrice);
+        dashboardDto.setTypologicalSweetDto(typologicalSweetLiteDto);
+        return dashboardDto;
+    }
+
     public DashboardDto map(TypologicalSweetLiteDto sweetLiteDto, DashboardModel dashboardModel){
         DashboardDto dashboardDto = modelMapper.map(dashboardModel, DashboardDto.class);
         dashboardDto.setTypologicalSweetDto(sweetLiteDto);

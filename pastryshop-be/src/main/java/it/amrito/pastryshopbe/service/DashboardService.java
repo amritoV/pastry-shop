@@ -9,6 +9,8 @@ import it.amrito.pastryshopbe.repository.DashboardRepository;
 import it.amrito.pastryshopbe.utils.Mapper;
 import it.amrito.pastryshopbe.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,21 +30,10 @@ public class DashboardService {
     private DashboardRepository dashboardRepository;
 
 
-    public List<DashboardDto> findAllDashboards(){
+    public Page<DashboardDto> findAllDashboards(Pageable pageable){
         LocalDate expirationDate = LocalDate.now().minusDays(applicationConfig.getProductValidityDays());
-        List<DashboardModel> dashboardModelList = dashboardRepository.trova(expirationDate);
-
-        List<DashboardDto> dashboardDtoList = new ArrayList<>();
-        for(DashboardModel dashboardModel: dashboardModelList){
-            TypologicalSweetModel typologicalSweetModel = dashboardModel.getTypologicalSweetModel();
-            TypologicalSweetLiteDto typologicalSweetLiteDto = mapper.mapLite(dashboardModel.getTypologicalSweetModel());
-            Double effectivePrice = UtilMethods.calculatePrice(typologicalSweetModel.getPrice(), dashboardModel.getProductionDate(), applicationConfig);
-            typologicalSweetLiteDto.setPrice(effectivePrice);
-            DashboardDto dashboardDto = mapper.map(typologicalSweetLiteDto, dashboardModel);
-            dashboardDtoList.add(dashboardDto);
-        }
-
-        return dashboardDtoList;
+        return dashboardRepository.trova(expirationDate, pageable)
+                .map(x -> mapper.map(x, UtilMethods.calculatePrice(x.getTypologicalSweetModel().getPrice(), x.getProductionDate(), applicationConfig)));
     }
 
 
