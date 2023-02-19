@@ -1,6 +1,5 @@
 package it.amrito.pastryshopbe.config.security;
 
-import it.amrito.pastryshopbe.model.Backoffice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.Objects;
 
 
 @Configuration
@@ -59,20 +54,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
             }
         };
-    }
-}
-
-@Component
-class BackofficeSecurity {
-    public boolean hasUserID(Authentication authentication, String nickane) {
-        System.out.println("\n\nAuthenticating teacher...");
-
-        if (!(authentication.getPrincipal() instanceof Backoffice)) { //getAuthorities().contains(new SimpleGrantedAuthority("ROLE_TEACHER"))
-            System.out.println("Rejected.");
-            return false;
-        }
-        Backoffice principal = (Backoffice) authentication.getPrincipal();
-        System.out.println("OK.\n--ID: "+principal.getNickname());
-        return Objects.equals(principal.getNickname(), nickane);
     }
 }
