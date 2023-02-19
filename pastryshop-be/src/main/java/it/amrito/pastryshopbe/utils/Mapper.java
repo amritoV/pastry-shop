@@ -1,14 +1,12 @@
 package it.amrito.pastryshopbe.utils;
 
-import it.amrito.pastryshopbe.dto.DashboardDto;
-import it.amrito.pastryshopbe.dto.IngredientDto;
-import it.amrito.pastryshopbe.dto.TypologicalSweetDto;
-import it.amrito.pastryshopbe.dto.TypologicalSweetLiteDto;
+import it.amrito.pastryshopbe.dto.*;
 import it.amrito.pastryshopbe.model.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +19,14 @@ public class Mapper {
     @Autowired
     ModelMapper modelMapper;
 
+    public DashboardModel map(DashboardLiteDto dashboardLiteDto, TypologicalSweetModel typologicalSweetModel, String nickname){
+        DashboardModel dashboardModel = modelMapper.map(dashboardLiteDto, DashboardModel.class);
+        dashboardModel.setBackOfficeName(nickname);
+        dashboardModel.setPublicationDate(LocalDateTime.now());
+        dashboardModel.setTypologicalSweetModel(typologicalSweetModel);
+        typologicalSweetModel.getDashboardModelSet().add(dashboardModel);
+        return dashboardModel;
+    }
 
     public List<TypologicalSweetLiteDto> map(List<TypologicalSweetModel> sweetModelList){
         return sweetModelList.stream()

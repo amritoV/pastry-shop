@@ -37,7 +37,7 @@ public class TypologicalController {
     public ResponseEntity<TypologicalSweetLiteDto> save(@Valid @RequestBody TypologicalSweetDto sweetDto){
         Optional<TypologicalSweetModel> modelOpt = typologicalService.findModelByNameIgnoreCase(sweetDto.getName());
         if(modelOpt.isPresent()){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //todo messaggio di errore piu specifico
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO messaggio di errore piu specifico
         }
         return ResponseEntity.ok(typologicalService.save(sweetDto));
     }
@@ -55,7 +55,7 @@ public class TypologicalController {
         if(!sweetDto.getName().equalsIgnoreCase(sweetModel.getName())){
             Optional<TypologicalSweetModel> opt = typologicalService.findModelByNameIgnoreCase(sweetDto.getName());
             if(opt.isPresent()){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//todo gestire messaggio d'errore
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO gestire messaggio d'errore
             }
         }
         TypologicalSweetLiteDto sweetLiteDtoUpdated = typologicalService.update(sweetDto, sweetModel);
@@ -65,7 +65,7 @@ public class TypologicalController {
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id){
         Optional<TypologicalSweetModel> model = typologicalService.findModelById(id);
-        if(!model.isPresent()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //todo gestire messaggio d'errore
+        if(!model.isPresent()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //TODO gestire messaggio d'errore
         typologicalService.deleteById(id);
         return ResponseEntity.ok().body("");
     }

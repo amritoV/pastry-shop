@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/dashboard/get").permitAll()
+                .antMatchers("/typological/get/{id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/typological/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/typological/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/typological/**").hasRole("ADMIN")

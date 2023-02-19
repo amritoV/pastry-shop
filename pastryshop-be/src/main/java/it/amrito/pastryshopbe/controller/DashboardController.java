@@ -1,20 +1,21 @@
 package it.amrito.pastryshopbe.controller;
 
 import it.amrito.pastryshopbe.dto.DashboardDto;
+import it.amrito.pastryshopbe.dto.DashboardLiteDto;
+import it.amrito.pastryshopbe.model.Backoffice;
 import it.amrito.pastryshopbe.service.DashboardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,11 +28,13 @@ public class DashboardController {
     @GetMapping(("/get"))
     public ResponseEntity<List<DashboardDto>> getAllProducts(
             @PageableDefault @SortDefault(sort = "publicationDate", direction = Sort.Direction.DESC) Pageable pageable){
-        logger.info("prrrodooooodpppppppppp");
-        logger.warn("prrrodooooodpppppppppp");
-        logger.error("prrrodooooodpppppppppp");
-        logger.debug("prrrodooooodpppppppppp");
-        logger.trace("prrrodooooodpppppppppp");
         return ResponseEntity.ok().body(dashboardService.findAllDashboards(pageable).getContent());
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> saveForm(@Valid @RequestBody DashboardLiteDto dashboardLiteDto, Authentication authentication){
+        Backoffice backoffice = (Backoffice) authentication.getPrincipal();
+        Long savedId = dashboardService.save(dashboardLiteDto, backoffice.getNickname());
+        return ResponseEntity.ok(savedId);
     }
 }
