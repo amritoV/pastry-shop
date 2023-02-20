@@ -3,6 +3,8 @@
 attualmente pastryshop è configurato per essere eseguito sulla propria macchina locale.
 le tecnologie principalmente usate sono: postgresql per la persistenza dei dati, spring boot per sviluppare il layer backend.
 Come build automation tool è stato deciso di utilizzare Maven.
+NOTA: se viene eseguito, il file data.sql, le prime invocazione alle api di salvataggio non funzioneranno, in quanto bisogna aspettare che la sequence
+si aggiorni con gli id staccati manualmente nel file data.sql
 ------------------------------------------------------------------------------------------------------------
 
 2) struttura repository

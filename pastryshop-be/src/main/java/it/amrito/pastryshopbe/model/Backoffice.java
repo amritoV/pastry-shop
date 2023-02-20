@@ -50,7 +50,7 @@ public class Backoffice implements Serializable,UserDetails{
 
     @Override
     public String getUsername() {
-        return null;
+        return nickname;
     }
 
     @Override
